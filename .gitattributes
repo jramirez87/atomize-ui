@@ -1,0 +1,22 @@
+# Normalize all text files to LF in repo, independent of OS
+* text=auto eol=lf
+
+# Keep Windows endings for batch scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Treat common binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.gz binary
+*.tar binary

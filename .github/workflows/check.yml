@@ -1,0 +1,104 @@
+name: 'Check'
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: 'Lint'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Run Lint
+        run: npm run lint
+
+  verify-types:
+    name: 'Types'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Verify Types
+        run: npm run type-check
+
+  formatting:
+    needs:
+      - lint
+      - verify-types
+    name: 'Formatting'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Check Formatting
+        run: npm run format:check
+
+  package-build:
+    needs:
+      - lint
+      - verify-types
+      - formatting
+    name: 'Verify Package Build'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Build package
+        run: npm run build
+      - name: Verify repo clean after build
+        run: git diff --exit-code
+
+  unit-test:
+    needs:
+      - formatting
+      - package-build
+    name: 'Unit Test'
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Run Unit Tests
+        run: npm run test
+
+  component-test:
+    needs:
+      - formatting
+      - package-build
+    name: 'Storybook Test'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run Component Tests
+        run: npm run test:sb

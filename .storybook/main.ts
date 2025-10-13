@@ -15,6 +15,13 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  async viteFinal(config) {
+    config.optimizeDeps = {
+      ...(config.optimizeDeps || {}),
+      exclude: ['vite-plugin-dts'],
+    };
+    return config;
+  },
 };
 
 export default config;

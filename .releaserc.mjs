@@ -3,7 +3,12 @@ const COMMIT_HASH_LENGTH = 7;
 
 export default {
   branches: ['master'],
-  plugins: [
+  verifyConditions: [
+    '@semantic-release/changelog',
+    '@semantic-release/git',
+    '@semantic-release/github',
+  ],
+  analyzeCommits: [
     [
       '@semantic-release/commit-analyzer',
       {
@@ -20,6 +25,8 @@ export default {
         },
       },
     ],
+  ],
+  generateNotes: [
     [
       '@semantic-release/release-notes-generator',
       {
@@ -96,10 +103,18 @@ export default {
         },
       },
     ],
+  ],
+  prepare: [
     [
       '@semantic-release/changelog',
       {
         changelogFile: 'CHANGELOG.md',
+      },
+    ],
+    [
+      '@semantic-release/npm',
+      {
+        provenance: true,
       },
     ],
     [
@@ -109,6 +124,8 @@ export default {
         message: 'chore(release): v${nextRelease.version} [skip ci]',
       },
     ],
+  ],
+  publish: [
     [
       '@semantic-release/npm',
       {

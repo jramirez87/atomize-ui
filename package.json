@@ -2,6 +2,12 @@
   "name": "atomize-ui-react",
   "version": "0.0.4",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jramirez87/atomize-ui.git"
+  },
+  "homepage": "https://github.com/jramirez87/atomize-ui#readme",
+  "description": "A customizable React 19 component library built with Vite, Tailwind CSS v4 and TypeScript.",
   "files": [
     "dist"
   ],

@@ -1,7 +1,7 @@
 // The length of the commit hash to be shown in the changelog
 const COMMIT_HASH_LENGTH = 7;
 
-module.exports = {
+export default {
   branches: ['master'],
   plugins: [
     [

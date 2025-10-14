@@ -49,12 +49,11 @@ export default {
             const hasBangInHeader =
               typeof commit.header === 'string' && /^[a-z]+(?:\([^)]+\))?!:/i.test(commit.header);
 
-            if (hasBreakingNotes || hasBangInHeader) {
-              commit.type = 'breaking';
-            }
+            // Compute effective type without mutating the commit object
+            const computedType = hasBreakingNotes || hasBangInHeader ? 'breaking' : commit.type;
 
             // Skip unknown types
-            if (!typeMap[commit.type]) return;
+            if (!typeMap[computedType]) return;
 
             const issues = [];
             let { subject } = commit;
@@ -86,7 +85,7 @@ export default {
             }
 
             return {
-              type: typeMap[commit.type],
+              type: typeMap[computedType],
               note: commit.notes,
               scope: commit.scope === '*' ? '' : commit.scope,
               shortHash:

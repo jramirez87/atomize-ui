@@ -53,10 +53,26 @@ jobs:
       - name: Check Formatting
         run: npm run format:check
 
+  storybook-build:
+    needs:
+      - formatting
+    name: 'Verify Storybook Build'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        uses: ./.github/actions/setup
+      - name: Build Storybook
+        run: npm run build-storybook
+      - name: Verify Storybook output is not empty
+        run:
+          test -d storybook-static && [ -f storybook-static/index.html ] && [ "$(find
+          storybook-static -type f | wc -l)" -gt 10 ]
+
   package-build:
     needs:
-      - lint
-      - verify-types
       - formatting
     name: 'Verify Package Build'
     timeout-minutes: 15
@@ -73,7 +89,6 @@ jobs:
 
   unit-test:
     needs:
-      - formatting
       - package-build
     name: 'Unit Test'
     timeout-minutes: 10
@@ -88,7 +103,6 @@ jobs:
 
   component-test:
     needs:
-      - formatting
       - package-build
     name: 'Storybook Test'
     timeout-minutes: 15

@@ -187,25 +187,28 @@ export const WithAutocomplete: Story = {
 };
 
 /** Controlled input example. */
+const ControlledExample: React.FC<React.ComponentProps<typeof Input>> = (args) => {
+  const [value, setValue] = React.useState('Hello');
+  return (
+    <div className="grid w-96 items-center gap-1.5">
+      <Label htmlFor="controlled">Controlled</Label>
+      <Input
+        {...args}
+        id="controlled"
+        value={value}
+        onChange={(e) => setValue(e.currentTarget.value)}
+      />
+      <p className="text-foreground/60 text-sm">Current: {value || '∅'}</p>
+    </div>
+  );
+};
+
+/** Controlled input with state reflected in UI. */
 export const Controlled: Story = {
   args: {
     placeholder: 'Type something…',
   },
-  render: (args) => {
-    const [value, setValue] = React.useState('Hello');
-    return (
-      <div className="grid w-96 items-center gap-1.5">
-        <Label htmlFor="controlled">Controlled</Label>
-        <Input
-          {...args}
-          id="controlled"
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
-        />
-        <p className="text-foreground/60 text-sm">Current: {value || '∅'}</p>
-      </div>
-    );
-  },
+  render: (args) => <ControlledExample {...args} />,
 };
 
 /** Uncontrolled input with defaultValue. */
@@ -247,7 +250,7 @@ export const Telephone: Story = {
   args: {
     type: 'tel',
     placeholder: '+1 555 0100',
-    pattern: '+?[0-9\-\s]+',
+    pattern: '+?[0-9 -]+',
     inputMode: 'tel',
   },
 };
@@ -341,50 +344,53 @@ export const WithButton: Story = {
  * 2) Correct it with a valid email and submit to show the success message.
  * Demonstrates a small end-to-end flow with Input + Button and accessible feedback.
  */
+const WithButtonInteractiveExample: React.FC<React.ComponentProps<typeof Input>> = (args) => {
+  const [value, setValue] = React.useState('');
+  const [status, setStatus] = React.useState<'initial' | 'error' | 'success'>('initial');
+
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (value && /.+@.+\..+/.test(value)) {
+      setStatus('success');
+    } else {
+      setStatus('error');
+    }
+  };
+
+  return (
+    <form noValidate onSubmit={onSubmit} className="grid w-96 items-center gap-1.5">
+      <Label htmlFor="subscribe-email">Email</Label>
+      <Input
+        {...args}
+        id="subscribe-email"
+        value={value}
+        onChange={(e) => setValue(e.currentTarget.value)}
+        aria-invalid={status === 'error' ? true : undefined}
+      />
+      {status === 'error' && (
+        <p role="alert" className="text-destructive text-sm">
+          Please enter a valid email.
+        </p>
+      )}
+      {status === 'success' && (
+        <p role="status" className="text-primary text-sm">
+          Subscribed!
+        </p>
+      )}
+      <div className="pt-1.5">
+        <Button type="submit">Subscribe</Button>
+      </div>
+    </form>
+  );
+};
+
+/** Interactive example with email input and button. */
 export const WithButtonInteractive: Story = {
   args: {
     placeholder: 'Email',
     type: 'email',
   },
-  render: (args) => {
-    const [value, setValue] = React.useState('');
-    const [status, setStatus] = React.useState<'initial' | 'error' | 'success'>('initial');
-
-    const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-      e.preventDefault();
-      if (value && /.+@.+\..+/.test(value)) {
-        setStatus('success');
-      } else {
-        setStatus('error');
-      }
-    };
-
-    return (
-      <form noValidate onSubmit={onSubmit} className="grid w-96 items-center gap-1.5">
-        <Label htmlFor="subscribe-email">Email</Label>
-        <Input
-          {...args}
-          id="subscribe-email"
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
-          aria-invalid={status === 'error' ? true : undefined}
-        />
-        {status === 'error' && (
-          <p role="alert" className="text-destructive text-sm">
-            Please enter a valid email.
-          </p>
-        )}
-        {status === 'success' && (
-          <p role="status" className="text-primary text-sm">
-            Subscribed!
-          </p>
-        )}
-        <div className="pt-1.5">
-          <Button type="submit">Subscribe</Button>
-        </div>
-      </form>
-    );
-  },
+  render: (args) => <WithButtonInteractiveExample {...args} />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const email = await canvas.findByLabelText(/email/i, { selector: 'input' });

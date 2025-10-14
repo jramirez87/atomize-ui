@@ -197,10 +197,8 @@ describe('Input', () => {
 
   it('interactive flow: invalid then valid email (Like WithButtonInteractive)', async () => {
     const Form = () => {
-      const [value, setValue] = (global as any).React?.useState?.('') ?? ['', ''];
-      const ReactLocal: typeof import('react') = (global as any).React || require('react');
-      const [val, setVal] = value ? [value, setValue] : ReactLocal.useState('');
-      const [status, setStatus] = ReactLocal.useState<'initial' | 'error' | 'success'>('initial');
+      const [val, setVal] = React.useState('');
+      const [status, setStatus] = React.useState<'initial' | 'error' | 'success'>('initial');
       const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         if (val && /.+@.+\..+/.test(val)) setStatus('success');

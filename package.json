@@ -34,6 +34,7 @@
     "format": "prettier . --write --cache",
     "format:check": "prettier . --check --cache",
     "build": "tsc -b && vite build",
+    "prepare": "npm run build",
     "build-storybook": "cross-env STORYBOOK_BUILD=true storybook build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

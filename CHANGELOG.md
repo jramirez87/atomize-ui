@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/jramirez87/atomize-ui/compare/v1.0.0...v1.0.1) (2025-10-15)
+
+
+### 🐛 Bug Fix
+
+* **release:** include dist via prepare and retry publish ([f80bc88](https://github.com/jramirez87/atomize-ui/commit/f80bc88e1ac3dd106aac7e46f295fb0e15c699c6))
+
 # [1.0.0](https://github.com/jramirez87/atomize-ui/compare/v0.0.4...v1.0.0) (2025-10-15)
 
 

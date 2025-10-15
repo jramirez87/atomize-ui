@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/jramirez87/atomize-ui/compare/v1.0.1...v1.0.2) (2025-10-15)
+
+
+### 🐛 Bug Fix
+
+* **button:** merge className after cva and export ButtonProps ([17e24ff](https://github.com/jramirez87/atomize-ui/commit/17e24ff905dc5ca0a127c1a7ec6e468f2a7c7902))
+
 ## [1.0.1](https://github.com/jramirez87/atomize-ui/compare/v1.0.0...v1.0.1) (2025-10-15)
 
 

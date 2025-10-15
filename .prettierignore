@@ -8,3 +8,4 @@ storybook-static
 .cache
 *.log
 package-lock.json
+CHANGELOG.md

@@ -9,7 +9,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist', 'storybook-static']),
+  globalIgnores(['dist', 'storybook-static', 'node_modules']),
   ...storybook.configs['flat/recommended'],
   {
     files: ['**/*.{ts,tsx}'],
@@ -20,13 +20,24 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
+      sourceType: 'module',
       globals: globals.browser,
     },
     rules: {
-      // Let prettier-plugin-organize-imports handle import sorting/removal
-      'sort-imports': 'off',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      indent: ['error', 2, { SwitchCase: 1 }],
+      'linebreak-style': ['error', 'unix'],
+      semi: ['error', 'always'],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-console': 'off',
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'object-shorthand': 'error',
+      'prefer-arrow-callback': 'error',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
   },
 ]);

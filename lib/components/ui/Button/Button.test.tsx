@@ -5,13 +5,20 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from './Button';
 
-const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;
+const variants = [
+  'default',
+  'destructive',
+  'outline',
+  'secondary',
+  'ghost',
+  'link',
+] as const;
 
 const textSizes = ['default', 'sm', 'lg'] as const;
 const iconSizes = ['icon', 'icon-sm', 'icon-lg'] as const;
 
 describe('Button', () => {
-  it.each(variants)('renders variant "%s" with visible label', (variant) => {
+  it.each(variants)('renders variant "%s" with visible label', variant => {
     const label = `Action: ${variant}`;
     render(<Button variant={variant}>{label}</Button>);
 
@@ -20,12 +27,12 @@ describe('Button', () => {
     expect(btn).toBeInTheDocument();
   });
 
-  it.each(textSizes)('applies size "%s" for text buttons', (size) => {
+  it.each(textSizes)('applies size "%s" for text buttons', size => {
     const label = `Size: ${size}`;
     render(
       <Button variant="secondary" size={size}>
         {label}
-      </Button>,
+      </Button>
     );
     const btn = screen.getByRole('button', { name: label });
     // Check a key class per size from cva definition
@@ -36,13 +43,13 @@ describe('Button', () => {
 
   it.each(iconSizes)(
     'applies icon size "%s" and requires aria-label for icon-only buttons',
-    (size) => {
+    size => {
       const label = 'Open';
       render(
         <Button variant="secondary" size={size} aria-label={label}>
           {/* decorative child for icon-only */}
           <span aria-hidden="true" />
-        </Button>,
+        </Button>
       );
       // Accessible name must come from aria-label
       const btn = screen.getByRole('button', { name: label });
@@ -51,16 +58,18 @@ describe('Button', () => {
       if (size === 'icon') expect(btn).toHaveClass('size-9');
       if (size === 'icon-sm') expect(btn).toHaveClass('size-8');
       if (size === 'icon-lg') expect(btn).toHaveClass('size-10');
-    },
+    }
   );
 
   it('WithIcon story: text provides accessible name; icon is decorative', () => {
     render(
       <Button variant="secondary">
         <span aria-hidden="true" /> Login with Email Button
-      </Button>,
+      </Button>
     );
-    const btn = screen.getByRole('button', { name: /login with email button/i });
+    const btn = screen.getByRole('button', {
+      name: /login with email button/i,
+    });
     expect(btn).toBeInTheDocument();
     // Ensure our decorative icon is in the tree and marked aria-hidden
     const icon = btn.querySelector('[aria-hidden="true"]');
@@ -69,9 +78,14 @@ describe('Button', () => {
 
   it('Rounded story: icon-only with rounded-full class', () => {
     render(
-      <Button variant="outline" size="icon" className="rounded-full" aria-label="Scroll to top">
+      <Button
+        variant="outline"
+        size="icon"
+        className="rounded-full"
+        aria-label="Scroll to top"
+      >
         <span aria-hidden="true" />
-      </Button>,
+      </Button>
     );
     const btn = screen.getByRole('button', { name: /scroll to top/i });
     expect(btn).toHaveClass('rounded-full');
@@ -81,7 +95,7 @@ describe('Button', () => {
     render(
       <Button variant="outline" disabled>
         <span className="animate-spin" aria-hidden="true" /> Submitting...
-      </Button>,
+      </Button>
     );
     const btn = screen.getByRole('button', { name: /submitting/i });
     expect(btn).toBeDisabled();
@@ -93,7 +107,7 @@ describe('Button', () => {
     render(
       <Button disabled onClick={onClick}>
         Save
-      </Button>,
+      </Button>
     );
     const btn = screen.getByRole('button', { name: /save/i });
     await userEvent.click(btn);
@@ -125,7 +139,7 @@ describe('Button', () => {
     render(
       <Button asChild>
         <a href="#login">Login</a>
-      </Button>,
+      </Button>
     );
 
     // Semantics: should be a link, not a button

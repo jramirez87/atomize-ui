@@ -10,13 +10,17 @@ const storybookBuild = process.env.STORYBOOK_BUILD === 'true';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), !storybookBuild && dts({ rollupTypes: true })].filter(Boolean),
+  plugins: [
+    react(),
+    tailwindcss(),
+    !storybookBuild && dts({ rollupTypes: true }),
+  ].filter(Boolean),
   build: {
     emptyOutDir: true,
     lib: {
       entry: resolve(__dirname, 'lib/index.ts'),
       name: 'AtomizeUIReact',
-      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
+      fileName: format => (format === 'es' ? 'index.js' : 'index.cjs'),
       cssFileName: 'style',
     },
     rollupOptions: {

@@ -3,7 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 const dirname =
-  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
 const isCI = process.env.CI === 'true';
 
@@ -19,7 +21,13 @@ export default defineConfig({
           globals: true,
           setupFiles: './vitest.setup.ts',
           include: ['lib/**/*.test.ts', 'lib/**/*.test.tsx'],
-          exclude: ['**/*.stories.*', '**/*.mdx', 'node_modules', 'dist', '.storybook/**'],
+          exclude: [
+            '**/*.stories.*',
+            '**/*.mdx',
+            'node_modules',
+            'dist',
+            '.storybook/**',
+          ],
         },
       },
       // Storybook-driven tests project

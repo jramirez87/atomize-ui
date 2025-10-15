@@ -12,7 +12,7 @@ describe('Label', () => {
       <div>
         <Label htmlFor="username">Username</Label>
         <Input id="username" />
-      </div>,
+      </div>
     );
     const label = screen.getByText('Username');
     const input = screen.getByLabelText('Username') as HTMLInputElement;
@@ -31,7 +31,7 @@ describe('Label', () => {
     render(
       <Label htmlFor="input-3" className="font-bold text-red-600">
         Email
-      </Label>,
+      </Label>
     );
     const label = screen.getByText('Email');
     expect(label).toHaveClass('text-red-600', 'font-bold');
@@ -39,9 +39,14 @@ describe('Label', () => {
 
   it('passes through native and aria props (id, data-*, aria-*)', () => {
     render(
-      <Label htmlFor="input-4" id="custom-label" data-testid="label" aria-describedby="email-help">
+      <Label
+        htmlFor="input-4"
+        id="custom-label"
+        data-testid="label"
+        aria-describedby="email-help"
+      >
         Address
-      </Label>,
+      </Label>
     );
     const label = screen.getByTestId('label');
     expect(label).toHaveAttribute('id', 'custom-label');
@@ -56,7 +61,7 @@ describe('Label', () => {
           Email <span aria-hidden="true">*</span>
         </Label>
         <Input id="email-required" required />
-      </div>,
+      </div>
     );
     const label = screen.getByText(/email/i);
     const asterisk = label.querySelector('[aria-hidden="true"]');
@@ -72,7 +77,7 @@ describe('Label', () => {
           Email
         </Label>
         <Input id="email-sr" />
-      </div>,
+      </div>
     );
     const label = container.querySelector('label');
     expect(label).toHaveClass('sr-only');
@@ -86,7 +91,7 @@ describe('Label', () => {
           <span aria-hidden="true" /> Email
         </Label>
         <Input id="email-icon" />
-      </div>,
+      </div>
     );
     const input = screen.getByLabelText('Email');
     expect(input).toBeInTheDocument();

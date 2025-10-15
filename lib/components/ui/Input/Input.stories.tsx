@@ -37,7 +37,8 @@ const meta: Meta<typeof Input> = {
         'week',
         'file',
       ],
-      description: 'Input field type. Choose the semantic type that matches the expected data.',
+      description:
+        'Input field type. Choose the semantic type that matches the expected data.',
       table: {
         type: {
           summary:
@@ -55,18 +56,27 @@ const meta: Meta<typeof Input> = {
     readOnly: {
       control: 'boolean',
       description: 'Prevents editing while allowing focus and selection.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Disables the input and prevents user interaction.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     required: {
       control: 'boolean',
       description:
         'Marks the field as required. Browsers may prevent submission if empty and indicate the requirement.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     autoComplete: {
       control: 'text',
@@ -108,7 +118,7 @@ export const File: Story = {
   args: {
     type: 'file',
   },
-  render: (args) => (
+  render: args => (
     <div className="grid items-center gap-1.5">
       <Label htmlFor="picture">Picture</Label>
       <Input {...args} id="picture" />
@@ -134,7 +144,7 @@ export const Password: Story = {
     type: 'password',
     placeholder: 'Enter your password',
   },
-  render: (args) => (
+  render: args => (
     <div className="grid items-center gap-1.5">
       <Label htmlFor="password">Password</Label>
       <Input {...args} id="password" />
@@ -156,7 +166,7 @@ export const Required: Story = {
   args: {
     required: true,
   },
-  render: (args) => (
+  render: args => (
     <div className="grid items-center gap-1.5">
       <Label htmlFor="email-required">
         Email
@@ -187,7 +197,9 @@ export const WithAutocomplete: Story = {
 };
 
 /** Controlled input example. */
-const ControlledExample: React.FC<React.ComponentProps<typeof Input>> = (args) => {
+const ControlledExample: React.FC<
+  React.ComponentProps<typeof Input>
+> = args => {
   const [value, setValue] = React.useState('Hello');
   return (
     <div className="grid w-96 items-center gap-1.5">
@@ -196,7 +208,7 @@ const ControlledExample: React.FC<React.ComponentProps<typeof Input>> = (args) =
         {...args}
         id="controlled"
         value={value}
-        onChange={(e) => setValue(e.currentTarget.value)}
+        onChange={e => setValue(e.currentTarget.value)}
       />
       <p className="text-foreground/60 text-sm">Current: {value || '∅'}</p>
     </div>
@@ -208,7 +220,7 @@ export const Controlled: Story = {
   args: {
     placeholder: 'Type something…',
   },
-  render: (args) => <ControlledExample {...args} />,
+  render: args => <ControlledExample {...args} />,
 };
 
 /** Uncontrolled input with defaultValue. */
@@ -216,7 +228,7 @@ export const Uncontrolled: Story = {
   args: {
     placeholder: 'Uncontrolled',
   },
-  render: (args) => (
+  render: args => (
     <div className="grid w-96 items-center gap-1.5">
       <Label htmlFor="uncontrolled">Uncontrolled</Label>
       <Input {...args} id="uncontrolled" defaultValue="Initial" />
@@ -229,7 +241,7 @@ export const NumberWithConstraints: Story = {
   args: {
     type: 'number',
   },
-  render: (args) => (
+  render: args => (
     <div className="grid w-64 items-center gap-1.5">
       <Label htmlFor="age">Age</Label>
       <Input {...args} id="age" min={0} max={120} step={1} placeholder="0" />
@@ -303,7 +315,7 @@ export const WeekField: Story = {
  * alongside the input area to guide users.
  */
 export const WithLabel: Story = {
-  render: (args) => (
+  render: args => (
     <div className="grid items-center gap-1.5">
       <Label htmlFor="email">{args.placeholder}</Label>
       <Input {...args} id="email" />
@@ -316,7 +328,7 @@ export const WithLabel: Story = {
  * or information to users.
  */
 export const WithHelperText: Story = {
-  render: (args) => (
+  render: args => (
     <div className="grid items-center gap-1.5">
       <Label htmlFor="email-2">{args.placeholder}</Label>
       <Input {...args} id="email-2" />
@@ -330,7 +342,7 @@ export const WithHelperText: Story = {
  * or used to trigger an action.
  */
 export const WithButton: Story = {
-  render: (args) => (
+  render: args => (
     <div className="flex items-center space-x-2">
       <Input {...args} />
       <Button type="submit">Subscribe</Button>
@@ -344,11 +356,15 @@ export const WithButton: Story = {
  * 2) Correct it with a valid email and submit to show the success message.
  * Demonstrates a small end-to-end flow with Input + Button and accessible feedback.
  */
-const WithButtonInteractiveExample: React.FC<React.ComponentProps<typeof Input>> = (args) => {
+const WithButtonInteractiveExample: React.FC<
+  React.ComponentProps<typeof Input>
+> = args => {
   const [value, setValue] = React.useState('');
-  const [status, setStatus] = React.useState<'initial' | 'error' | 'success'>('initial');
+  const [status, setStatus] = React.useState<'initial' | 'error' | 'success'>(
+    'initial'
+  );
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     if (value && /.+@.+\..+/.test(value)) {
       setStatus('success');
@@ -358,13 +374,17 @@ const WithButtonInteractiveExample: React.FC<React.ComponentProps<typeof Input>>
   };
 
   return (
-    <form noValidate onSubmit={onSubmit} className="grid w-96 items-center gap-1.5">
+    <form
+      noValidate
+      onSubmit={onSubmit}
+      className="grid w-96 items-center gap-1.5"
+    >
       <Label htmlFor="subscribe-email">Email</Label>
       <Input
         {...args}
         id="subscribe-email"
         value={value}
-        onChange={(e) => setValue(e.currentTarget.value)}
+        onChange={e => setValue(e.currentTarget.value)}
         aria-invalid={status === 'error' ? true : undefined}
       />
       {status === 'error' && (
@@ -390,7 +410,7 @@ export const WithButtonInteractive: Story = {
     placeholder: 'Email',
     type: 'email',
   },
-  render: (args) => <WithButtonInteractiveExample {...args} />,
+  render: args => <WithButtonInteractiveExample {...args} />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const email = await canvas.findByLabelText(/email/i, { selector: 'input' });
@@ -403,13 +423,13 @@ export const WithButtonInteractive: Story = {
       const submit = await canvas.findByRole('button', { name: /subscribe/i });
       await userEvent.click(submit);
       await expect(await canvas.findByRole('alert')).toHaveTextContent(
-        /please enter a valid email/i,
+        /please enter a valid email/i
       );
       await expect(email).toHaveAttribute('aria-invalid', 'true');
     });
 
     await step?.('Type a valid email', async () => {
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 1000));
       await userEvent.clear(email);
       await userEvent.type(email, 'example@email.com', { delay: 20 });
     });

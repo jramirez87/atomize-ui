@@ -13,13 +13,21 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+      ],
       description:
         'Visual style of the button. Use "default" for primary actions, "destructive" for risky/irreversible actions, "outline"/"secondary" for reduced emphasis, "ghost" for very subtle actions, and "link" for inline textual actions.',
       table: {
         category: 'Appearance',
         type: {
-          summary: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"',
+          summary:
+            '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"',
         },
         defaultValue: { summary: '"default"' },
       },
@@ -47,7 +55,10 @@ const meta: Meta<typeof Button> = {
     disabled: {
       control: 'boolean',
       description: 'Disables the button and prevents user interaction.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     asChild: {
       table: {
@@ -144,7 +155,7 @@ export const WithIcon: Story = {
   args: {
     ...Secondary.args,
   },
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <Mail aria-hidden="true" /> Login with Email Button
     </Button>
@@ -161,7 +172,7 @@ export const Rounded: Story = {
     className: 'rounded-full',
     'aria-label': 'Scroll to top',
   },
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <ArrowUpIcon aria-hidden="true" />
     </Button>
@@ -177,7 +188,7 @@ export const Loading: Story = {
     ...Outline.args,
     disabled: true,
   },
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <Loader2 className="animate-spin" />
       Submitting...
@@ -213,7 +224,7 @@ export const AllSizes: Story = {
   args: {
     ...Outline.args,
   },
-  render: (args) => (
+  render: args => (
     <div className="flex flex-col items-start gap-8 sm:flex-row">
       <div className="flex items-start gap-2">
         <Button {...args} size="sm">
@@ -259,7 +270,7 @@ export const AsChildLink: Story = {
     asChild: true,
     variant: 'default',
   },
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <a href="#login">Login</a>
     </Button>

@@ -3,12 +3,7 @@ const COMMIT_HASH_LENGTH = 7;
 
 export default {
   branches: ['master'],
-  verifyConditions: [
-    '@semantic-release/changelog',
-    '@semantic-release/git',
-    '@semantic-release/github',
-  ],
-  analyzeCommits: [
+  plugins: [
     [
       '@semantic-release/commit-analyzer',
       {
@@ -25,8 +20,6 @@ export default {
         },
       },
     ],
-  ],
-  generateNotes: [
     [
       '@semantic-release/release-notes-generator',
       {
@@ -43,14 +36,16 @@ export default {
             // Mark as breaking when footer includes BREAKING CHANGE(S) notes
             const hasBreakingNotes =
               Array.isArray(commit.notes) &&
-              commit.notes.some((n) => /BREAKING CHANGES?/i.test(n.title || ''));
+              commit.notes.some(n => /BREAKING CHANGES?/i.test(n.title || ''));
 
             // Detect the '!' breaking marker in the header (e.g., feat!: ... or feat(scope)!: ...)
             const hasBangInHeader =
-              typeof commit.header === 'string' && /^[a-z]+(?:\([^)]+\))?!:/i.test(commit.header);
+              typeof commit.header === 'string' &&
+              /^[a-z]+(?:\([^)]+\))?!:/i.test(commit.header);
 
             // Compute effective type without mutating the commit object
-            const computedType = hasBreakingNotes || hasBangInHeader ? 'breaking' : commit.type;
+            const computedType =
+              hasBreakingNotes || hasBangInHeader ? 'breaking' : commit.type;
 
             // Skip unknown types
             if (!typeMap[computedType]) return;
@@ -74,13 +69,16 @@ export default {
 
               if (context.host) {
                 // User URLs.
-                subject = subject.replace(/\B@([a-z0-9](?:-?[a-z0-9/]){0,38})/g, (_, username) => {
-                  if (username.includes('/')) {
-                    return `@${username}`;
-                  }
+                subject = subject.replace(
+                  /\B@([a-z0-9](?:-?[a-z0-9/]){0,38})/g,
+                  (_, username) => {
+                    if (username.includes('/')) {
+                      return `@${username}`;
+                    }
 
-                  return `[@${username}](${context.host}/${username})`;
-                });
+                    return `[@${username}](${context.host}/${username})`;
+                  }
+                );
               }
             }
 
@@ -95,15 +93,13 @@ export default {
               subject,
               // remove references that already appear in the subject
               references: commit.references.filter(
-                (reference) => !issues.includes(reference.issue),
+                reference => !issues.includes(reference.issue)
               ),
             };
           },
         },
       },
     ],
-  ],
-  prepare: [
     [
       '@semantic-release/changelog',
       {
@@ -121,14 +117,6 @@ export default {
       {
         assets: ['CHANGELOG.md', 'package.json'],
         message: 'chore(release): v${nextRelease.version} [skip ci]',
-      },
-    ],
-  ],
-  publish: [
-    [
-      '@semantic-release/npm',
-      {
-        provenance: true,
       },
     ],
     '@semantic-release/github',

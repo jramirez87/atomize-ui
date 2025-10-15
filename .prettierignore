@@ -6,3 +6,5 @@ storybook-static
 .next
 .out
 .cache
+*.log
+package-lock.json
